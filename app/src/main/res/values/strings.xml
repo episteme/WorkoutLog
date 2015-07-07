@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">WorkoutLog2</string>
+
+    <string name="title_section1">Overview</string>
+    <string name="title_section2">Track</string>
+    <string name="title_section3">Other</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_overview">OverviewActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="TrackSection">Track Section</string>
+    <string name="OtherSection">Other</string>
+    <string name="title_activity_track">TrackActivity</string>
+</resources>

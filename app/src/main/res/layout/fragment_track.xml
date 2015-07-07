@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:orientation="vertical"
+            tools:context=".TrackFragment">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:paddingTop="0dp"
+        android:background="#666666">
+
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:id="@+id/dateLeft"
+            android:onClick="decreaseDate"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:layout_gravity="center_vertical|left"/>
+
+        <TextView
+            android:layout_width="275dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Monday, January 01, 1990"
+            android:id="@+id/date"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:textColor="#FFFFFF"
+            android:paddingBottom="0dp"/>
+
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_arrow_forward_white_24dp"
+            android:id="@+id/dateRight"
+            android:onClick="increaseDate"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/savedNumber"
+            android:layout_weight="1"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:id="@+id/saveButton"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Track"
+            android:id="@+id/track"/>
+
+        <ExpandableListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expandableListView"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+</LinearLayout>
