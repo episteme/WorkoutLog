@@ -6,10 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.CheckedTextView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.util.ArrayList;
 
@@ -43,7 +40,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_details, null);
         }
-        text = (TextView) convertView.findViewById(R.id.textView1);
+        text = (TextView) convertView.findViewById(R.id.textView7);
         text.setText(children);
         convertView.setOnClickListener(new OnClickListener() {
             @Override
