@@ -4,6 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>
+        <item name="colorAccent">#000000</item>
     </style>
+
+
 
 </resources>
