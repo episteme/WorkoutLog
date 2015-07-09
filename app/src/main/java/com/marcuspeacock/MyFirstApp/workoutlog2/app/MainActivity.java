@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MyDialogListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -115,12 +115,5 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onReturnValue(HashMap<String, String> values) {
-        for(String s : values.keySet()) {
-            Log.i(s, values.get(s));
-        }
     }
 }
