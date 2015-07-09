@@ -13,15 +13,19 @@ import android.widget.EditText;
 
 public class TrackActivity extends ActionBarActivity {
 
-    private final EditText exercise = (EditText) findViewById(R.id.exerciseText);
-    private final EditText weight = (EditText) findViewById(R.id.weightText);
-    private final EditText reps = (EditText) findViewById(R.id.repsText);
-    private final EditText notes = (EditText) findViewById(R.id.notesText);
+    private EditText exercise;
+    private EditText weight;
+    private EditText reps;
+    private EditText notes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.track_dialog);
+        exercise = (EditText) findViewById(R.id.exerciseText);
+        weight = (EditText) findViewById(R.id.weightText);
+        reps = (EditText) findViewById(R.id.repsText);
+        notes = (EditText) findViewById(R.id.notesText);
     }
 
 

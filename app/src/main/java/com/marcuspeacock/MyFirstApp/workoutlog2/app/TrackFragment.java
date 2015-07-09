@@ -63,7 +63,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
                 groups);
         listView.setAdapter(adapter);
         ExerciseGroup exerciseGroup = new ExerciseGroup("Squat");
-        exerciseGroup.children.add("Item");
+        exerciseGroup.children.add(new ExerciseSet("1", 2, 3.0));
         groups.add(exerciseGroup);
         return rootView;
     }
@@ -74,9 +74,9 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
             DatabaseContract.WorkoutLog.EXERCISE_COLUMN, DatabaseContract.WorkoutLog.REPS_COLUMN,
             DatabaseContract.WorkoutLog.WEIGHT_COLUMN, DatabaseContract.WorkoutLog.NOTES_COLUMN };
         String sortOrder = DatabaseContract.WorkoutLog._ID + " DESC";
-        String where = "'" + DatabaseContract.WorkoutLog.DATE_COLUMN + " = " + dateFormat.format(date) + "'";
+        String where = DatabaseContract.WorkoutLog.DATE_COLUMN + " = \'" + dateFormat.format(date) + "\'";
         Log.i("", where);
-        Cursor c = db.query(DatabaseContract.WorkoutLog.TABLE_NAME, projection, null, null, null, null, sortOrder);
+        Cursor c = db.query(DatabaseContract.WorkoutLog.TABLE_NAME, projection, where, null, null, null, sortOrder);
         c.moveToFirst();
         while (!c.isAfterLast()) {
             Log.i("", c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog._ID)));

@@ -35,20 +35,22 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final String children = (String) getChild(groupPosition, childPosition);
+        final ExerciseSet children = (ExerciseSet) getChild(groupPosition, childPosition);
         TextView text = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_details, null);
         }
         text = (TextView) convertView.findViewById(R.id.textView7);
-        text.setText(children);
-        convertView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(activity, children,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+        text.setText(String.valueOf(children.reps));
+        text = (TextView) convertView.findViewById(R.id.textView8);
+        text.setText(String.valueOf(children.weight));
+//        convertView.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(activity, children,
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//        });
         return convertView;
     }
 
