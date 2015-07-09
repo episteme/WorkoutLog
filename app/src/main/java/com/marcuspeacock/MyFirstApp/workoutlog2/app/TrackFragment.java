@@ -55,9 +55,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
         this.dateView = (TextView) rootView.findViewById(R.id.date);
         listenTo(R.id.dateLeft);
         listenTo(R.id.dateRight);
-        listenTo(R.id.saveButton);
         listenTo(R.id.track);
-        updateText();
         updateDate();
         writeData();
         ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView);
@@ -162,7 +160,6 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
 
     private void drawUpdates() {
         updateDate();
-        updateText();
     }
 
     public static Date getDate(int n) {
@@ -183,13 +180,6 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
     private void increaseDate() {
         date = getDate(1);
         drawUpdates();
-    }
-
-    private void updateText() {
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        EditText editText = (EditText) rootView.findViewById(R.id.savedNumber);
-        int n = sharedPref.getInt("int" + dateFormat.format(date), 0);
-        editText.setText(String.valueOf(n));
     }
 
     private void updateDate() {
@@ -213,14 +203,6 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
             case R.id.dateRight:
                 increaseDate();
                 updateExerciseList();
-                break;
-            case R.id.saveButton:
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                EditText editText = (EditText) rootView.findViewById(R.id.savedNumber);
-                int n = Integer.parseInt(editText.getText().toString());
-                editor.putInt("int" + dateFormat.format(date), n);
-                editor.commit();
                 break;
             case R.id.track:
                 Intent intent = new Intent(getActivity(), TrackActivity.class);
