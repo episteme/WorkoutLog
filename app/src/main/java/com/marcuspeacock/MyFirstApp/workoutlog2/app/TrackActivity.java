@@ -28,7 +28,6 @@ public class TrackActivity extends ActionBarActivity {
         notes = (EditText) findViewById(R.id.notesText);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -56,7 +55,8 @@ public class TrackActivity extends ActionBarActivity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         if (validInputs()) {
             ContentValues values = new ContentValues();
-            values.put(DatabaseContract.WorkoutLog.DATE_COLUMN, TrackFragment.dateFormat.format(TrackFragment.getDate(0)));
+            Bundle extras = getIntent().getExtras();
+            values.put(DatabaseContract.WorkoutLog.DATE_COLUMN, extras.getString("date"));
             values.put(DatabaseContract.WorkoutLog.EXERCISE_COLUMN, exercise.getText().toString());
             values.put(DatabaseContract.WorkoutLog.REPS_COLUMN, reps.getText().toString());
             values.put(DatabaseContract.WorkoutLog.WEIGHT_COLUMN, weight.getText().toString());

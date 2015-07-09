@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class TrackFragment extends Fragment implements View.OnClickListener  {
 
@@ -31,6 +32,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
     private View rootView;
     private DBHelper dbHelper;
     private ArrayList<ExerciseGroup> groups = new ArrayList<ExerciseGroup>();
+    private MyExpandableListAdapter listAdapter;
 
     private static Date date;
 
@@ -59,13 +61,66 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
         updateDate();
         writeData();
         ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView);
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(getActivity(),
+        listAdapter = new MyExpandableListAdapter(getActivity(),
                 groups);
-        listView.setAdapter(adapter);
-        ExerciseGroup exerciseGroup = new ExerciseGroup("Squat");
-        exerciseGroup.children.add(new ExerciseSet("1", 2, 3.0));
-        groups.add(exerciseGroup);
+        listView.setAdapter(listAdapter);
+        updateExerciseList();
         return rootView;
+    }
+
+    private void updateExerciseList() {
+        HashMap<String, ArrayList<ExerciseSet>> data = getData();
+        groups.clear();
+        for (String exercise : data.keySet()) {
+            ExerciseGroup exerciseGroup = new ExerciseGroup(exercise);
+            for (ExerciseSet exerciseSet : data.get(exercise)) {
+                exerciseGroup.children.add(exerciseSet);
+            }
+            groups.add(exerciseGroup);
+        }
+        listAdapter.notifyDataSetChanged();
+    }
+
+    private HashMap<String, ArrayList<ExerciseSet>> getData() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String[] projection = { DatabaseContract.WorkoutLog._ID, DatabaseContract.WorkoutLog.DATE_COLUMN,
+                DatabaseContract.WorkoutLog.EXERCISE_COLUMN, DatabaseContract.WorkoutLog.REPS_COLUMN,
+                DatabaseContract.WorkoutLog.WEIGHT_COLUMN, DatabaseContract.WorkoutLog.NOTES_COLUMN };
+        String sortOrder = DatabaseContract.WorkoutLog._ID + " DESC";
+        String where = DatabaseContract.WorkoutLog.DATE_COLUMN + " = \'" + dateFormat.format(date) + "\'";
+        Log.i("", where);
+        Cursor c = db.query(DatabaseContract.WorkoutLog.TABLE_NAME, projection, where, null, null, null, sortOrder);
+        c.moveToFirst();
+        HashMap<String, ArrayList<ExerciseSet>> results = new HashMap();
+        while (!c.isAfterLast()) {
+            try {
+                String _ID = c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog._ID));
+                String date = c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.DATE_COLUMN));
+                String exercise = c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.EXERCISE_COLUMN));
+                Integer reps = c.getInt(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.REPS_COLUMN));
+                Double weight = c.getDouble(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.WEIGHT_COLUMN));
+                ExerciseSet exerciseSet = new ExerciseSet(exercise, reps, weight);
+                ArrayList<ExerciseSet> setList;
+                if (!results.keySet().contains(exercise)) {
+                    setList = new ArrayList<ExerciseSet>();
+                }
+                else {
+                    setList = results.get(exercise);
+                }
+                setList.add(exerciseSet);
+                results.put(exercise, setList);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (c.isLast()) {
+                break;
+            }
+            else {
+                c.moveToNext();
+            }
+        }
+        return results;
     }
 
     private void writeData() {
@@ -97,6 +152,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
     public void onResume() {
         super.onResume();
         writeData();
+        updateExerciseList();
     }
 
     private void listenTo(int id) {
@@ -152,9 +208,11 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
         switch (v.getId()) {
             case R.id.dateLeft:
                 decreaseDate();
+                updateExerciseList();
                 break;
             case R.id.dateRight:
                 increaseDate();
+                updateExerciseList();
                 break;
             case R.id.saveButton:
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -166,6 +224,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
                 break;
             case R.id.track:
                 Intent intent = new Intent(getActivity(), TrackActivity.class);
+                intent.putExtra("date", dateFormat.format(date));
                 startActivity(intent);
 //                DialogFragment dialogFragment = new TrackDialogFragment();
 //                dialogFragment.show(getActivity().getFragmentManager(), "missiles");
