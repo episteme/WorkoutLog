@@ -1,10 +1,8 @@
 package com.marcuspeacock.MyFirstApp.workoutlog2.app;
 
 import android.app.Activity;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 
@@ -40,17 +38,11 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_details, null);
         }
-        text = (TextView) convertView.findViewById(R.id.textView7);
+        text = (TextView) convertView.findViewById(R.id.reps);
         text.setText(String.valueOf(children.reps));
-        text = (TextView) convertView.findViewById(R.id.textView8);
+        text = (TextView) convertView.findViewById(R.id.weight);
         text.setText(String.valueOf(children.weight));
-//        convertView.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(activity, children,
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        convertView.setTag(children._ID);
         return convertView;
     }
 
@@ -103,6 +95,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 }

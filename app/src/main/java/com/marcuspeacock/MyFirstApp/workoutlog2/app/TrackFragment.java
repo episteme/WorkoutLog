@@ -13,10 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,6 +59,20 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
         listAdapter = new MyExpandableListAdapter(getActivity(),
                 groups);
         listView.setAdapter(listAdapter);
+        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Intent intent = new Intent(getActivity(), TrackActivity.class);
+                intent.putExtra("_ID", (Integer) v.getTag());
+                intent.putExtra("date", dateFormat.format(date));
+                intent.putExtra("reps", ((TextView) v.findViewById(R.id.reps)).getText());
+                intent.putExtra("weight", ((TextView) v.findViewById(R.id.weight)).getText());
+                intent.putExtra("exercise", ((ExerciseGroup) parent.getExpandableListAdapter().getGroup(groupPosition)).name);
+                startActivity(intent);
+                return true;
+            }
+        });
         updateExerciseList();
         return rootView;
     }
@@ -92,12 +103,12 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
         HashMap<String, ArrayList<ExerciseSet>> results = new HashMap();
         while (!c.isAfterLast()) {
             try {
-                String _ID = c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog._ID));
+                Integer _ID = c.getInt(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog._ID));
                 String date = c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.DATE_COLUMN));
                 String exercise = c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.EXERCISE_COLUMN));
                 Integer reps = c.getInt(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.REPS_COLUMN));
                 Double weight = c.getDouble(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.WEIGHT_COLUMN));
-                ExerciseSet exerciseSet = new ExerciseSet(exercise, reps, weight);
+                ExerciseSet exerciseSet = new ExerciseSet(exercise, reps, weight, _ID);
                 ArrayList<ExerciseSet> setList;
                 if (!results.keySet().contains(exercise)) {
                     setList = new ArrayList<ExerciseSet>();
