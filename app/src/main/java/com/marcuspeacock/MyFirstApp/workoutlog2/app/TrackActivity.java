@@ -23,6 +23,10 @@ public class TrackActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.track_dialog);
+        populateFields();
+    }
+
+    private void populateFields() {
         exercise = (EditText) findViewById(R.id.exerciseText);
         weight = (EditText) findViewById(R.id.weightText);
         reps = (EditText) findViewById(R.id.repsText);
@@ -69,17 +73,10 @@ public class TrackActivity extends ActionBarActivity {
         DBHelper mDbHelper = new DBHelper(this);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         if (validInputs()) {
-            ContentValues values = new ContentValues();
-            Bundle extras = getIntent().getExtras();
-            values.put(DatabaseContract.WorkoutLog.DATE_COLUMN, extras.getString("date"));
-            values.put(DatabaseContract.WorkoutLog.EXERCISE_COLUMN, exercise.getText().toString());
-            values.put(DatabaseContract.WorkoutLog.REPS_COLUMN, reps.getText().toString());
-            values.put(DatabaseContract.WorkoutLog.WEIGHT_COLUMN, weight.getText().toString());
-            values.put(DatabaseContract.WorkoutLog.NOTES_COLUMN, notes.getText().toString());
+            ContentValues values = getContentValues();
             long id;
             if (_ID != null) {
-                String filter = "_ID=" + _ID;
-                id = db.update(DatabaseContract.WorkoutLog.TABLE_NAME, values, filter, null);
+                id = db.update(DatabaseContract.WorkoutLog.TABLE_NAME, values, "_ID=" + _ID, null);
             }
             else {
                 id = db.insert(DatabaseContract.WorkoutLog.TABLE_NAME, null, values);
@@ -87,6 +84,17 @@ public class TrackActivity extends ActionBarActivity {
             Log.i("new id", String.valueOf(id));
             finish();
         }
+    }
+
+    private ContentValues getContentValues() {
+        ContentValues values = new ContentValues();
+        Bundle extras = getIntent().getExtras();
+        values.put(DatabaseContract.WorkoutLog.DATE_COLUMN, extras.getString("date"));
+        values.put(DatabaseContract.WorkoutLog.EXERCISE_COLUMN, exercise.getText().toString());
+        values.put(DatabaseContract.WorkoutLog.REPS_COLUMN, reps.getText().toString());
+        values.put(DatabaseContract.WorkoutLog.WEIGHT_COLUMN, weight.getText().toString());
+        values.put(DatabaseContract.WorkoutLog.NOTES_COLUMN, notes.getText().toString());
+        return values;
     }
 
     private boolean validInputs() {
