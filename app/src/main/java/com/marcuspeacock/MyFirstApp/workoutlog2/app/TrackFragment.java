@@ -32,6 +32,9 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
     private MyExpandableListAdapter listAdapter;
 
     private static Date date;
+    public static final String[] DB_COLUMNS = new String[]{DatabaseContract.WorkoutLog._ID, DatabaseContract.WorkoutLog.DATE_COLUMN,
+            DatabaseContract.WorkoutLog.EXERCISE_COLUMN, DatabaseContract.WorkoutLog.REPS_COLUMN,
+            DatabaseContract.WorkoutLog.WEIGHT_COLUMN, DatabaseContract.WorkoutLog.NOTES_COLUMN};
 
     public static TrackFragment newInstance(int sectionNumber) {
         TrackFragment fragment = new TrackFragment();
@@ -54,7 +57,6 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
         listenTo(R.id.dateRight);
         listenTo(R.id.track);
         updateDate();
-        writeData();
         ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView);
         listAdapter = new MyExpandableListAdapter(getActivity(),
                 groups);
@@ -92,13 +94,10 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
 
     private HashMap<String, ArrayList<ExerciseSet>> getData() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String[] projection = { DatabaseContract.WorkoutLog._ID, DatabaseContract.WorkoutLog.DATE_COLUMN,
-                DatabaseContract.WorkoutLog.EXERCISE_COLUMN, DatabaseContract.WorkoutLog.REPS_COLUMN,
-                DatabaseContract.WorkoutLog.WEIGHT_COLUMN, DatabaseContract.WorkoutLog.NOTES_COLUMN };
         String sortOrder = DatabaseContract.WorkoutLog._ID + " DESC";
         String where = DatabaseContract.WorkoutLog.DATE_COLUMN + " = \'" + dateFormat.format(date) + "\'";
         Log.i("", where);
-        Cursor c = db.query(DatabaseContract.WorkoutLog.TABLE_NAME, projection, where, null, null, null, sortOrder);
+        Cursor c = db.query(DatabaseContract.WorkoutLog.TABLE_NAME, DB_COLUMNS, where, null, null, null, sortOrder);
         c.moveToFirst();
         HashMap<String, ArrayList<ExerciseSet>> results = new HashMap();
         while (!c.isAfterLast()) {
@@ -132,35 +131,9 @@ public class TrackFragment extends Fragment implements View.OnClickListener  {
         return results;
     }
 
-    private void writeData() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String[] projection = { DatabaseContract.WorkoutLog._ID, DatabaseContract.WorkoutLog.DATE_COLUMN,
-            DatabaseContract.WorkoutLog.EXERCISE_COLUMN, DatabaseContract.WorkoutLog.REPS_COLUMN,
-            DatabaseContract.WorkoutLog.WEIGHT_COLUMN, DatabaseContract.WorkoutLog.NOTES_COLUMN };
-        String sortOrder = DatabaseContract.WorkoutLog._ID + " DESC";
-        String where = DatabaseContract.WorkoutLog.DATE_COLUMN + " = \'" + dateFormat.format(date) + "\'";
-        Log.i("", where);
-        Cursor c = db.query(DatabaseContract.WorkoutLog.TABLE_NAME, projection, where, null, null, null, sortOrder);
-        c.moveToFirst();
-        while (!c.isAfterLast()) {
-            Log.i("", c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog._ID)));
-            Log.i("", c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.DATE_COLUMN)));
-            Log.i("", c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.EXERCISE_COLUMN)));
-            Log.i("", c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.REPS_COLUMN)));
-            Log.i("", c.getString(c.getColumnIndexOrThrow(DatabaseContract.WorkoutLog.WEIGHT_COLUMN)));
-            if (c.isLast()) {
-                break;
-            }
-            else {
-                c.moveToNext();
-            }
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        writeData();
         updateExerciseList();
     }
 

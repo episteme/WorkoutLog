@@ -90,10 +90,10 @@ public class TrackActivity extends ActionBarActivity {
         ContentValues values = new ContentValues();
         Bundle extras = getIntent().getExtras();
         values.put(DatabaseContract.WorkoutLog.DATE_COLUMN, extras.getString("date"));
-        values.put(DatabaseContract.WorkoutLog.EXERCISE_COLUMN, exercise.getText().toString());
-        values.put(DatabaseContract.WorkoutLog.REPS_COLUMN, reps.getText().toString());
-        values.put(DatabaseContract.WorkoutLog.WEIGHT_COLUMN, weight.getText().toString());
-        values.put(DatabaseContract.WorkoutLog.NOTES_COLUMN, notes.getText().toString());
+        values.put(DatabaseContract.WorkoutLog.EXERCISE_COLUMN, exercise.getText().toString().trim());
+        values.put(DatabaseContract.WorkoutLog.REPS_COLUMN, reps.getText().toString().trim());
+        values.put(DatabaseContract.WorkoutLog.WEIGHT_COLUMN, weight.getText().toString().trim());
+        values.put(DatabaseContract.WorkoutLog.NOTES_COLUMN, notes.getText().toString().trim());
         return values;
     }
 
