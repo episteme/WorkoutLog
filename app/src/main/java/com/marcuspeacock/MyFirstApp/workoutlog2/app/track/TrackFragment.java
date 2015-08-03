@@ -1,10 +1,7 @@
-package com.marcuspeacock.MyFirstApp.workoutlog2.app;
+package com.marcuspeacock.MyFirstApp.workoutlog2.app.track;
 
 import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.marcuspeacock.MyFirstApp.workoutlog2.app.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

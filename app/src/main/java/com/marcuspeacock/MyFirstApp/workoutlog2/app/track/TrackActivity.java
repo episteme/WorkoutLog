@@ -1,4 +1,4 @@
-package com.marcuspeacock.MyFirstApp.workoutlog2.app;
+package com.marcuspeacock.MyFirstApp.workoutlog2.app.track;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import com.marcuspeacock.MyFirstApp.workoutlog2.app.DBHelper;
+import com.marcuspeacock.MyFirstApp.workoutlog2.app.DatabaseContract;
+import com.marcuspeacock.MyFirstApp.workoutlog2.app.R;
 
 
 public class TrackActivity extends ActionBarActivity {
